@@ -1,60 +1,58 @@
-# tideo-user-test
+# Tideo User Test
 
-即插即用的用户测试工具包：被动埋点（tracker.js）+ 主动问卷（survey.js），可配置化适用于任何 Web 产品。
+> Web 应用用户测试完整工具链 — 被动埋点 + 主动问卷，即插即用
 
-## 文件结构
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/ildar981105-create/tideo-user-test)](https://github.com/ildar981105-create/tideo-user-test/stargazers)
+[![GitHub topics](https://img.shields.io/github/topics/codebuddy-skill)](https://github.com/topics/codebuddy-skill)
 
-```
-assets/
-├── tracker.js          # 埋点核心（读取 TRACKER_CONFIG）
-├── tracker-config.js    # Tracker 配置模板
-├── survey.js           # 问卷核心（读取 SURVEY_CONFIG）
-└── survey-config.js    # Survey 配置模板
-
-references/
-├── tracker-spec.md     # tracker API 规范
-└── survey-spec.md      # survey API 规范
-```
-
-## 快速使用
-
-### 零配置引入（使用 Tideo 默认配置）
+## 🎯 5 分钟集成
 
 ```html
-<script src="assets/tracker-config.js"></script>
-<script>window.TRACKER_CONFIG.endpoint = 'https://your-server.com/track';</script>
-<script src="assets/tracker.js"></script>
-<script src="assets/survey.js"></script>
-```
-
-### 深度定制
-
-```html
-<script src="assets/survey-config.js"></script>
+<!-- 1. 引入配置 -->
+<script src="survey-config.js"></script>
 <script>
-  window.SURVEY_CONFIG.productName = '我的产品';
-  window.SURVEY_CONFIG.tasks = [
-    { id:'T1', label:'完成注册', detect:'signup_done' },
-    { id:'T2', label:'完成下单', detect:'order_done' }
-  ];
-  window.SURVEY_CONFIG.checkpoints = [
-    { id:'ease', trigger:'signup_done', type:'rating', question:'注册顺利吗？', scale:5, labels:['很难','很顺'] }
-  ];
+  window.SURVEY_CONFIG = {
+    productName: '我的产品',
+    tasks: [
+      { id:'T1', label:'完成注册', detect:'signup_done'    },
+      { id:'T2', label:'完成下单', detect:'order_done'     },
+      { id:'T3', label:'完成支付', detect:'payment_done'  }
+    ]
+  };
 </script>
-<script src="assets/tracker.js"></script>
-<script src="assets/survey.js"></script>
+
+<!-- 2. 引入核心文件 -->
+<script src="tracker.js"></script>
+<script src="survey.js"></script>
 ```
 
-## 核心 API
+业务代码中触发 milestone：
 
-### Tracker
+```javascript
+TideoTracker.milestone('signup_done');   // 注册完成 → 触发 T1 任务
+TideoTracker.milestone('order_done');    // 下单完成 → 触发 T2 任务
+TideoTracker.milestone('payment_done');  // 支付完成 → 触发 T3 + 总结问卷
+```
 
-- `TideoTracker.record(action)` — 手动埋点
-- `TideoTracker.milestone(name)` — 标记里程碑
-- `TideoTracker.phaseStart/End(name)` — 阶段边界
+## 核心模块
 
-### Survey
+| 模块 | 功能 | 定制点 |
+|------|------|--------|
+| **tracker.js** | 6 维埋点（操作序列/犹豫/困惑/停留/里程碑/热区） | `TRACKER_CONFIG.endpoint` |
+| **survey.js** | 主动问卷（任务面板 + checkpoint 微问卷 + SUS/EV/NPS） | `SURVEY_CONFIG.tasks` |
 
-- `window.SURVEY_CONFIG.tasks` — 任务列表
-- `window.SURVEY_CONFIG.checkpoints` — 检查点触发器
-- `window.SURVEY_CONFIG.sus` — SUS 题目自定义
+## 完整功能说明
+
+详见 [SKILL.md](SKILL.md)
+
+## 使用场景
+
+- 🧪 可用性测试 — 还原用户操作路径，发现卡点
+- 📋 情境问卷 — 关键步骤后即时收集用户反馈
+- 📊 满意度调研 — 内置 SUS/EV/NPS 标准量表
+- 🔍 犹豫/困惑检测 — 自动识别用户在页面的困惑行为
+
+## License
+
+MIT © Tideo
