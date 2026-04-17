@@ -1,14 +1,13 @@
 /**
  * tracker.js — 通用用户测试埋点系统 v3
  *
+ * ⚠️ 加载顺序（重要）：
+ *   1. tracker-config.js（必须，最先引入）
+ *   2. 覆盖 window.TRACKER_CONFIG 配置（如 endpoint）
+ *   3. 引入本文件
+ *
  * 设计目标：完整记录用户操作链路，回答"用户能否顺利用下来"
  * 可配置化：通过 window.TRACKER_CONFIG 自定义 endpoint/milestone/actionMap
- *
- * 集成步骤：
- * 1. 引入 tracker-config.js（可选，有默认值）
- * 2. 按需覆盖 window.TRACKER_CONFIG.endpoint 等配置
- * 3. 引入本文件
- * 4. 在业务代码中调用 window.TideoTracker.milestone(name)
  *
  * 记录维度：
  * 1. 操作序列 — 每一步操作按时间排列，还原用户行为路径

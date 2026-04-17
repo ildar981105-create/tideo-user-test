@@ -1,5 +1,12 @@
 /**
  * survey.js — Tideo 情境嵌入式用户测试引擎 v1
+ *
+ * ⚠️ 加载顺序（重要）：
+ *   1. tracker-config.js
+ *   2. tracker.js
+ *   3. survey-config.js（必须在本文件之前引入）
+ *   4. 本文件
+ *
  * 依赖：tracker.js（TideoTracker.record）
  * 触发：URL 含 mode=test 参数时激活
  */

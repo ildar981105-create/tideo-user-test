@@ -5,18 +5,48 @@ description: "This skill provides a complete user testing toolkit for web applic
 
 # Tideo User Test Skill — Web 应用用户测试完整工具链 v3（可配置版）
 
-## 概述
+## 🎯 5 分钟上手
 
-本 Skill 提供一套**即插即用且完全可配置的的用户测试工具**，包含两个核心模块：
+### 最简配置（复制即用）
 
-1. **Tracker（被动埋点层）** — 自动运行，无需配置，记录用户全操作路径
-2. **Survey（主动问卷层）** — URL 参数控制激活，情境嵌入式微问卷 + 总结问卷
+```html
+<!-- 1. 引入配置 + 设置你的产品信息 -->
+<script src="survey-config.js"></script>
+<script>
+  window.SURVEY_CONFIG = {
+    productName: '我的产品',
+    tasks: [
+      { id:'T1', label:'完成注册', detect:'signup_done'    },
+      { id:'T2', label:'完成下单', detect:'order_done'     },
+      { id:'T3', label:'完成支付', detect:'payment_done'  }
+    ]
+  };
+</script>
 
-两个模块均可**零改动直接引入任意 Web 项目**，也可通过配置文件定制行为。
+<!-- 2. 引入核心文件 -->
+<script src="tracker.js"></script>
+<script src="survey.js"></script>
+```
+
+### 业务代码中触发 milestone
+
+```javascript
+// 用户完成某个步骤时调用一次，Survey 自动响应
+TideoTracker.milestone('signup_done');    // 注册完成 → 触发 T1 任务
+TideoTracker.milestone('order_done');     // 下单完成 → 触发 T2 任务
+TideoTracker.milestone('payment_done');    // 支付完成 → 触发 T3 + 总结问卷
+```
+
+### 完整功能说明
+
+| 模块 | 功能 | 定制方式 |
+|------|------|---------|
+| **tracker.js** | 6 维埋点（操作/犹豫/困惑/停留/里程碑/热区） | 改 `TRACKER_CONFIG.endpoint` 即可 |
+| **survey.js** | 主动问卷（任务面板 + checkpoint 微问卷 + SUS/EV/NPS） | 改 `SURVEY_CONFIG.tasks` 即可 |
 
 ---
 
-## 快速集成（3 步完成）
+## 概述
 
 ### Step 1: 引入 tracker.js
 

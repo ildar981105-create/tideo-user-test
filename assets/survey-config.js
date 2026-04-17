@@ -1,23 +1,54 @@
 /**
  * survey-config.js — Tideo Survey 全局配置
- * 
- * 使用前必读：
- * 1. 在引入 survey.js 之前引入本文件
- * 2. 完整配置示例见下方注释
- * 3. 所有字段均为可选（有默认值）
- * 
- * 最小配置示例：
+ *
+ * ============================================================
+ * 🎯 最简配置（只需 3 步，5 分钟完成）
+ * ============================================================
+ *
+ * 1. 引入本文件
+ * 2. 设置 productName + tasks（见下方最小示例）
+ * 3. 引入 survey.js
+ *
+ * 最小配置示例（复制下面的代码即可）：
+ *
  * <script src="survey-config.js"></script>
  * <script>
  *   window.SURVEY_CONFIG = {
  *     productName: '我的产品',
  *     tasks: [
- *       { id: 'T1', label: '完成注册', detect: 'signup_done' },
- *       { id: 'T2', label: '完成首单', detect: 'order_done' }
+ *       { id: 'T1', label: '完成注册',    detect: 'signup_done'    },
+ *       { id: 'T2', label: '完成下单',    detect: 'order_done'    },
+ *       { id: 'T3', label: '完成支付',    detect: 'payment_done'  }
  *     ]
  *   };
  * </script>
  * <script src="survey.js"></script>
+ *
+ * ============================================================
+ * 📋 配置速查表
+ * ============================================================
+ *
+ * 字段         | 类型    | 必填 | 说明
+ * -------------|---------|------|------
+ * productName  | string  | 否   | 产品名称（默认"本产品"）
+ * tasks        | array   | 否   | 任务列表（默认 Tideo 3 任务）
+ * checkpoints  | array   | 否   | 情境问卷（默认内置 4 个）
+ * testVideoUrl | string  | 否   | 测试素材地址（默认 assets/test-video.mov）
+ *
+ * task 对象格式：
+ *   { id: 'T1', label: '任务描述', hint: '提示文字(可选)', detect: 'milestone名称' }
+ *
+ * checkpoint 对象格式：
+ *   { id:'id', trigger:'milestone名', delay:1500, type:'rating'|'sam',
+ *     question:'问题', scale:5, labels:['左','右'],
+ *     allowComment:true, commentPH:'占位文字' }
+ *   或 SAM 型：
+ *   { id:'id', trigger:'milestone名', delay:1500, type:'sam',
+ *     question:'问题', dims:[{id,label,l:'左',r:'右'}] }
+ *
+ * ============================================================
+ * 完整配置示例
+ * ============================================================
  */
 
 window.SURVEY_CONFIG = window.SURVEY_CONFIG || {};
