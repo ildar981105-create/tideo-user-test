@@ -1,5 +1,5 @@
 /**
- * survey-config.js — Tideo Survey 全局配置
+ * survey-config.js — global Survey 全局配置
  *
  * ============================================================
  * 🎯 最简配置（只需 3 步，5 分钟完成）

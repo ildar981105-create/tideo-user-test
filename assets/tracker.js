@@ -238,7 +238,7 @@ function mapMilestone(name) {
 }
 
 // ========== 手动埋点 API ==========
-global.TideoTracker = {
+global.UserTestTracker = {
     record: record,
     flush: flush,
     uid: uid,

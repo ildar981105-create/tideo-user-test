@@ -1,5 +1,5 @@
 /**
- * tracker-config.js — Tideo Tracker 全局配置
+ * tracker-config.js — global Tracker 全局配置
  * 
  * 使用前必读：
  * 1. 在引入 tracker.js 之前引入本文件
@@ -46,7 +46,7 @@ window.TRACKER_CONFIG.endpoint = window.TRACKER_CONFIG.endpoint || '';
 window.TRACKER_CONFIG.milestones = window.TRACKER_CONFIG.milestones || null;
 
 /**
- * 默认 milestone 映射（Tideo 特定名称 → 通用名称）
+ * 默认 milestone 映射（global → 通用名称）
  * 当 TRACKER_CONFIG.milestones 未设置时使用此表
  */
 window.TRACKER_CONFIG.DEFAULT_MILESTONE_MAP = {

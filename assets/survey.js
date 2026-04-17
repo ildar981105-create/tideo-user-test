@@ -1,5 +1,5 @@
 /**
- * survey.js — Tideo 情境嵌入式用户测试引擎 v1
+ * survey.js — 用户 情境嵌入式用户测试引擎 v1
  *
  * ⚠️ 加载顺序（重要）：
  *   1. tracker-config.js
@@ -7,7 +7,7 @@
  *   3. survey-config.js（必须在本文件之前引入）
  *   4. 本文件
  *
- * 依赖：tracker.js（TideoTracker.record）
+ * 依赖：tracker.js（UserTestTracker.record）
  * 触发：URL 含 mode=test 参数时激活
  */
 (function(global){
@@ -48,19 +48,20 @@ var isInternal=cfgType==='user'?false:(cfgType==='internal'?true:!(testRound.inc
 var tasks=isInternal?TASKS_INTERNAL:TASKS_USER;
 var checkpoints=isInternal?CP_INTERNAL:CP_USER;
 var guidedMode=isInternal;
+var pn=(global.SURVEY_CONFIG||{}).productName||'本产品';
 
 // SUS 标准10题
 var SUS_Q=[
-'我认为我会经常使用 Tideo','我觉得 Tideo 不必要地复杂','我认为 Tideo 很容易使用',
-'我认为我需要技术人员的支持才能使用 Tideo','我觉得 Tideo 的各项功能整合得很好',
-'我觉得 Tideo 有太多不一致的地方','我认为大多数人都能很快学会使用 Tideo',
-'我觉得 Tideo 用起来很麻烦','我使用 Tideo 时感到很有信心','我需要学很多东西才能使用 Tideo'
+'我认为我会经常使用 ' + pn + '','我觉得 ' + pn + ' 不必要地复杂','我认为 ' + pn + ' 很容易使用',
+'我认为我需要技术人员的支持才能使用 ' + pn + '','我觉得 ' + pn + ' 的各项功能整合得很好',
+'我觉得 ' + pn + ' 有太多不一致的地方','我认为大多数人都能很快学会使用 ' + pn + '',
+'我觉得 ' + pn + ' 用起来很麻烦','我使用 ' + pn + ' 时感到很有信心','我需要学很多东西才能使用 ' + pn + ''
 ];
 // 情绪价值量表
 var EV_Q=[
 '使用过程让我感到愉悦','等待 AI 处理时我不觉得无聊','看到成片效果让我惊喜',
-'Tideo 让我觉得视频翻译不再困难','整个过程让我有掌控感','我愿意向朋友展示 Tideo 的成果',
-'Tideo 的界面让我感到专业和可信','处理过程中的角色让体验更有趣','整体体验超出了我的预期'
+'' + pn + ' 让我觉得视频翻译不再困难','整个过程让我有掌控感','我愿意向朋友展示 ' + pn + ' 的成果',
+'' + pn + ' 的界面让我感到专业和可信','处理过程中的角色让体验更有趣','整体体验超出了我的预期'
 ];
 
 // 根据 URL 配置过滤情境问卷
@@ -195,7 +196,7 @@ css.textContent='\
 ';
 document.head.appendChild(css);
 
-function rec(type,d){if(global.TideoTracker)global.TideoTracker.record(type,d)}
+function rec(type,d){if(global.UserTestTracker)global.UserTestTracker.record(type,d)}
 
 // ===== 欢迎浮层 =====
 var TEST_VIDEO_URL='assets/test-video.mov';
@@ -220,7 +221,7 @@ ov.innerHTML=c;document.body.appendChild(ov);
 document.getElementById('svStart').onclick=function(){ov.style.animation='svF .3s reverse forwards';setTimeout(function(){ov.remove();if(cfgTasks)showTaskPanel();rec('survey_welcome_done',{config:configKey()})},300)};
 rec('survey_welcome_show',{config:configKey()});
 }
-function config(){return{welcome:isInternal?{title:'感谢参与可用性测试',subtitle:'Tideo 是一个 AI 视频翻译工具，可以自动将视频翻译成其他语言。我们希望通过你的真实操作体验，发现产品的易用性问题。',note:'请像第一次使用一个新产品一样自然操作。没有对错之分，你遇到的任何困惑都是我们需要改进的地方。过程中会在关键节点弹出简短问卷，请如实作答。',estimatedTime:'5-8 分钟'}:{title:'感谢参与体验测试',subtitle:'请使用 Tideo 将一段视频翻译成中文，并下载翻译后的结果。',note:'请像平时使用新产品一样自然操作。过程中会弹出几个简短问题，请如实作答。',estimatedTime:'5-8 分钟'}}}
+function config(){return{welcome:isInternal?{title:'感谢参与可用性测试',subtitle:'' + pn + ' 是一个 AI 视频翻译工具，可以自动将视频翻译成其他语言。我们希望通过你的真实操作体验，发现产品的易用性问题。',note:'请像第一次使用一个新产品一样自然操作。没有对错之分，你遇到的任何困惑都是我们需要改进的地方。过程中会在关键节点弹出简短问卷，请如实作答。',estimatedTime:'5-8 分钟'}:{title:'感谢参与体验测试',subtitle:'请使用 ' + pn + ' 将一段视频翻译成中文，并下载翻译后的结果。',note:'请像平时使用新产品一样自然操作。过程中会弹出几个简短问题，请如实作答。',estimatedTime:'5-8 分钟'}}}
 function configKey(){return isInternal?'internal_v1':'user_v1'}
 
 // ===== 任务面板 =====
@@ -384,7 +385,7 @@ h+='<button class="sv-ev-o" data-ev="'+i+'" data-v="'+(v+1)+'">'+l+'</button>';
 
 // NPS
 h+='<div class="sv-sec"><div class="sv-sec-t">推荐意愿 <span class="sv-sec-tag">NPS</span></div>';
-h+='<div class="sv-sq-t">你有多大可能向同事/朋友推荐 Tideo？</div>';
+h+='<div class="sv-sq-t">你有多大可能向同事/朋友推荐 ' + pn + '？</div>';
 h+='<div class="sv-nps-r">';for(var n=0;n<=10;n++)h+='<button class="sv-nps-b" data-nps="'+n+'">'+n+'</button>';
 h+='</div><div class="sv-nps-l"><span>完全不会</span><span>非常愿意</span></div>';
 h+='<div class="sv-sq-t" style="margin-top:14px">你愿意推荐的主要原因是？</div>';
@@ -392,13 +393,13 @@ h+='<textarea class="sv-oi" id="svNpsWhy" placeholder="（可选）"></textarea>
 h+='</div>';
 
 // 三词描述
-h+='<div class="sv-sec"><div class="sv-sec-t">三个词描述 Tideo</div>';
+h+='<div class="sv-sec"><div class="sv-sec-t">三个词描述 ' + pn + '</div>';
 h+='<div class="sv-wr"><input id="svW1" placeholder="第一个词"><input id="svW2" placeholder="第二个词"><input id="svW3" placeholder="第三个词"></div></div>';
 
 // 开放题
 h+='<div class="sv-sec"><div class="sv-sec-t">开放反馈</div>';
 h+='<div class="sv-sq-t">使用过程中最困惑/卡住的地方是什么？</div><textarea class="sv-oi" id="svOpen1" placeholder="请描述…"></textarea>';
-h+='<div class="sv-sq-t">你觉得 Tideo 最有价值的功能是什么？</div><textarea class="sv-oi" id="svOpen2" placeholder="请描述…"></textarea>';
+h+='<div class="sv-sq-t">你觉得 ' + pn + ' 最有价值的功能是什么？</div><textarea class="sv-oi" id="svOpen2" placeholder="请描述…"></textarea>';
 h+='</div>';
 
 h+='<button class="sv-btn" style="width:100%;padding:14px;font-size:.92rem" id="svExitSubmit">提交问卷</button>';
@@ -443,17 +444,17 @@ totalTime:Math.round((Date.now()-startTs)/1000),
 config:configKey()
 };
 rec('survey_exit_submit',data);
-if(global.TideoTracker)global.TideoTracker.flush();
+if(global.UserTestTracker)global.UserTestTracker.flush();
 // 显示感谢
 ov.querySelector('.sv-exit-c').innerHTML='<div class="sv-thx"><div class="sv-thx-ic">🎉</div><div class="sv-thx-t">感谢你的参与！</div><div class="sv-thx-s">你的反馈对我们改进产品非常重要。<br>问卷数据已保存，你现在可以关闭页面了。</div><div class="sv-thx-m"><div class="sv-thx-v"><div class="vn" style="color:#818cf8">'+susScore.toFixed(0)+'</div><div class="vl">SUS 分数</div></div><div class="sv-thx-v"><div class="vn" style="color:'+(nps>=9?'#10b981':nps>=7?'#f59e0b':'#ef4444')+'">'+nps+'</div><div class="vl">NPS 评分</div></div><div class="sv-thx-v"><div class="vn" style="color:#f59e0b">'+Math.round((Date.now()-startTs)/1000/60)+'<span style="font-size:.7rem">min</span></div><div class="vl">测试用时</div></div></div></div>';
 }
 
 // ===== 事件桥接 — 监听 tracker 事件 =====
 function hookTracker(){
-if(!global.TideoTracker)return;
-var origRecord=global.TideoTracker.record;
-global.TideoTracker.record=function(type,detail){
-var result=origRecord.call(global.TideoTracker,type,detail);
+if(!global.UserTestTracker)return;
+var origRecord=global.UserTestTracker.record;
+global.UserTestTracker.record=function(type,detail){
+var result=origRecord.call(global.UserTestTracker,type,detail);
 // 任务检测
 if(type==='milestone'&&detail&&detail.name){
 var mn=detail.name;
@@ -477,9 +478,9 @@ if(detail.url.indexOf('translate')!==-1)completeTask('page_translate');
 }
 return result;
 };
-var origMilestone=global.TideoTracker.milestone;
-global.TideoTracker.milestone=function(name,extra){
-origMilestone.call(global.TideoTracker,name,extra);
+var origMilestone=global.UserTestTracker.milestone;
+global.UserTestTracker.milestone=function(name,extra){
+origMilestone.call(global.UserTestTracker,name,extra);
 completeTask(name);
 if(name.indexOf('mps_complete')===0){completeTask('mps_complete');triggerCheckpoint('view_result')}
 if(name==='view_result')triggerCheckpoint('view_result');
@@ -488,7 +489,7 @@ if(name==='finetune_edit'){completeTask('finetune_edit');triggerCheckpoint('fine
 }
 
 // ===== 公开API =====
-global.TideoSurvey={
+global.UserTestSurvey={
 completeTask:completeTask,
 triggerCheckpoint:triggerCheckpoint,
 showExitSurvey:function(){showExitSurvey()},
